@@ -1,116 +1,70 @@
 <div align="center">
 
-# BTOON Project
+# BTOON
 
-**Binary Transport for TOON** — A high-performance binary serialization format
+**MessagePack, with tables that store each key once.**
 
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![C++ Standard](https://img.shields.io/badge/C++-20-blue.svg)](https://en.cppreference.com/w/cpp/20)
-[![Status](https://img.shields.io/badge/status-active-brightgreen.svg)](https://github.com/BTOON-project)
+[Website](https://btoon.net) · [Playground](https://btoon.net/docs#playground) · [Specification](https://github.com/BTOON-project/btoon-core/blob/main/docs/SPEC.md) · [Benchmarks](https://btoon.net/benchmarks)
 
 </div>
 
----
+BTOON ("Binary TOON") is a compact binary serialization format. It is MessagePack plus
+a columnar encoding for arrays of records that share their keys. That's the idea behind
+[TOON](https://github.com/toon-format/toon), in binary form, for storage and transport
+between programs.
 
-## 🌟 What is BTOON?
+- **Smaller for record-shaped data.** Each key of a table is written once, followed by
+  each column's values. 10,000 user records take 447 KB, against 767 KB as
+  MessagePack and 1,018 KB as JSON.
+- **Valid MessagePack.** BTOON's own types are negative extension ids, so any
+  MessagePack decoder can still read a document. BTOON decoders read MessagePack whose
+  map keys are strings.
+- **Canonical.** A value has exactly one encoding. Every library writes the same bytes,
+  checked against 260 shared conformance vectors.
+- **Extension types:** timestamps with nanoseconds and a UTC offset, dates,
+  arbitrary-precision integers, and float32/float64 vectors for embeddings.
+- **Optional envelopes:** compression (zlib in every library, plus LZ4, Zstandard, Brotli
+  and Snappy where available) and HMAC-SHA256 signatures.
+- **Safe on hostile input.** Decoders bounds-check every read, limit nesting and
+  decompressed size, validate UTF-8, and are fuzzed.
 
-**BTOON** (Binary TOON) is a high-performance binary serialization format that extends [MessagePack](https://msgpack.org/) with custom tabular data optimization. Built for the [TOON format](https://github.com/toon-format/toon), BTOON provides **20-40% size reduction** for uniform tabular datasets while maintaining full MessagePack compatibility.
+## Libraries
 
-### Key Features
+| Language | Repository | Package | Notes |
+|---|---|---|---|
+| C++ | [btoon-core](https://github.com/BTOON-project/btoon-core) | build from source | Reference implementation, the spec, the conformance vectors and the `btoon` CLI |
+| Python | [btoon-python](https://github.com/BTOON-project/btoon-python) | `btoon` (PyPI) | Native extension over btoon-core |
+| Node.js | [btoon-nodejs](https://github.com/BTOON-project/btoon-nodejs) | `btoon` (npm) | Node-API addon over btoon-core |
+| JavaScript / TypeScript | [btoon-javascript](https://github.com/BTOON-project/btoon-javascript) | `@btoon/js` (npm) | Pure TypeScript, no dependencies: browsers, Node.js, Deno, Bun, edge runtimes |
+| Go | [btoon-go](https://github.com/BTOON-project/btoon-go) | `github.com/BTOON-project/btoon-go` | Pure Go, no cgo |
+| PHP | [btoon-php](https://github.com/BTOON-project/btoon-php) | `btoon/btoon` (Packagist) | Pure PHP 8.2+ |
+| Website | [btoon-web](https://github.com/BTOON-project/btoon-web) | [btoon.net](https://btoon.net) | Docs, in-browser playground, benchmarks |
 
-- 🚀 **High Performance** — 4-7x faster than JSON, comparable to MessagePack
-- 📦 **MessagePack Compatible** — Fully compliant with the MessagePack specification
-- 📊 **Tabular Optimization** — Custom extension for compact tabular data encoding
-- 🔒 **Type Safe** — Comprehensive, modern C++20 type system
-- 🌐 **Multi-Language** — Language bindings for Python, Node.js, JavaScript, Go, and PHP
-- 🎯 **Zero-Copy Decoding** — Efficient `std::span` API for minimal allocations
-- 📝 **Schema Validation** — Validate data against user-defined schemas
-- 🌊 **Streaming API** — Efficiently encode and decode sequences of objects
+Every library implements spec 0.1 at version 0.1.0. **0.1.0 isn't published to the
+package registries yet.** PyPI (`btoon` 0.0.1) and npm (`btoon` 0.0.7) still have the
+older 0.0.x releases, whose format is not compatible. Until the release, each README
+explains how to install from the repository.
 
----
+## Quick look
 
-## 📚 Repositories
+```python
+import btoon
 
-### Core Library
-- **[btoon-core](https://github.com/BTOON-project/btoon-core)** — C++20 core library with C-API for language bindings
-
-### Language Bindings
-- **[btoon-python](https://github.com/BTOON-project/btoon-python)** — Python bindings (pybind11)
-- **[btoon-nodejs](https://github.com/BTOON-project/btoon-nodejs)** — Node.js bindings (N-API)
-- **[btoon-javascript](https://github.com/BTOON-project/btoon-javascript)** — JavaScript/WASM bindings
-- **[btoon-go](https://github.com/BTOON-project/btoon-go)** — Go bindings (cgo)
-- **[btoon-php](https://github.com/BTOON-project/btoon-php)** — PHP bindings
-
-### Web & Tools
-- **[btoon-web](https://github.com/BTOON-project/btoon-web)** — Modern web interface built with React + Vite
-
----
-
-## 🚀 Quick Start
-
-```cpp
-#include "btoon/btoon.h"
-
-using namespace btoon;
-
-// Create a value
-Value data = Map{
-    {"name", String("Alice")},
-    {"age", Int(30)},
-    {"active", Bool(true)}
-};
-
-// Encode
-auto encoded = encode(data);
-
-// Decode
-auto decoded = decode(encoded);
+rows = [{"id": i, "name": f"user{i}", "active": i % 2 == 0} for i in range(1000)]
+data = btoon.encode(rows)   # 11,561 bytes; MessagePack needs 27,509 and JSON 42,281
+assert btoon.decode(data) == rows
 ```
 
----
+The same bytes decode identically in C++, Node.js, the browser, Go and PHP.
 
-## 🤝 Contributing
+## Contributing
 
-BTOON is in early stages, so every bug report, idea, or pull request has outsized impact! We welcome contributions of all kinds:
+Issues and pull requests are welcome in every repository. Format changes start in
+btoon-core: first [the spec](https://github.com/BTOON-project/btoon-core/blob/main/docs/SPEC.md),
+then the conformance vectors, then each implementation.
+[IMPLEMENTATION-GUIDE.md](https://github.com/BTOON-project/btoon-core/blob/main/docs/IMPLEMENTATION-GUIDE.md)
+covers writing a new library.
 
-- 🐛 **Bug Reports** — Help us improve stability
-- 💡 **Feature Ideas** — Share your use cases and needs
-- 📖 **Documentation** — Improve docs and examples
-- 🔧 **Code Contributions** — Submit PRs for features or fixes
-- 🎨 **Design & UX** — Enhance the web interface
+## License
 
-### How to Contribute
-
-1. Fork the repository you want to contribute to
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Make your changes with clear commit messages
-4. Open a pull request with context and details
-5. Be kind and transparent — we ship in public to learn together
-
-**No contribution is too small.** Docs improvements, design tweaks, and roadmap suggestions are all valuable when building something new.
-
----
-
-## 📖 Resources
-
-- 📘 [Technical Specification](https://github.com/BTOON-project/btoon-core/blob/main/docs/btoon-spec.md)
-- 🗺️ [Roadmap](https://github.com/BTOON-project/btoon-core/blob/main/docs/roadmap.md)
-- 🌐 [Web Interface](https://btoon.dev) *(coming soon)*
-- 📝 [API Documentation](https://github.com/BTOON-project/btoon-core#api-reference)
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
-
----
-
-<div align="center">
-
-**Built with ❤️ by the BTOON community**
-
-[Website](https://btoon.dev) • [Documentation](https://github.com/BTOON-project/btoon-core) • [Issues](https://github.com/BTOON-project/btoon-core/issues)
-
-</div>
-
+MIT. See each repository's `LICENSE` file.
