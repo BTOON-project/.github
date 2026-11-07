@@ -40,8 +40,9 @@ between programs.
 | C++ | [btoon-core](https://github.com/BTOON-project/btoon-core) | [CLI downloads](https://github.com/BTOON-project/btoon-core/releases/latest), library via CMake | Reference implementation, the spec, the conformance vectors and the `btoon` CLI |
 | Website | [btoon-web](https://github.com/BTOON-project/btoon-web) | [btoon.net](https://btoon.net) | Docs, in-browser playground, benchmarks |
 
-Every library is at version 0.1.0 and implements spec 0.1. New releases are published
-from each repository's GitHub Actions release workflow when a version tag is pushed.
+Every library implements spec 0.1 (versions 0.1.x). Pushing a version tag releases it.
+GitHub Actions publishes to PyPI and npm and attaches the CLI to the core release.
+Packagist and the Go module proxy pick up new tags automatically.
 Releases before 0.1 (`btoon` 0.0.x on npm and PyPI) used an older, incompatible format.
 
 ## Quick look
