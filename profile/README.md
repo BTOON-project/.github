@@ -30,20 +30,19 @@ between programs.
 
 ## Libraries
 
-| Language | Repository | Package | Notes |
+| Language | Repository | Install | Notes |
 |---|---|---|---|
-| C++ | [btoon-core](https://github.com/BTOON-project/btoon-core) | build from source | Reference implementation, the spec, the conformance vectors and the `btoon` CLI |
-| Python | [btoon-python](https://github.com/BTOON-project/btoon-python) | `btoon` (PyPI) | Native extension over btoon-core |
-| Node.js | [btoon-nodejs](https://github.com/BTOON-project/btoon-nodejs) | `btoon` (npm) | Node-API addon over btoon-core |
-| JavaScript / TypeScript | [btoon-javascript](https://github.com/BTOON-project/btoon-javascript) | `@btoon/js` (npm) | Pure TypeScript, no dependencies: browsers, Node.js, Deno, Bun, edge runtimes |
-| Go | [btoon-go](https://github.com/BTOON-project/btoon-go) | `github.com/BTOON-project/btoon-go` | Pure Go, no cgo |
-| PHP | [btoon-php](https://github.com/BTOON-project/btoon-php) | `btoon/btoon` (Packagist) | Pure PHP 8.2+ |
+| JavaScript / TypeScript | [btoon-javascript](https://github.com/BTOON-project/btoon-javascript) | `npm install @btoon/js` | Pure TypeScript, no dependencies: browsers, Node.js, Deno, Bun, edge runtimes. The fastest choice in Node.js too |
+| Python | [btoon-python](https://github.com/BTOON-project/btoon-python) | `pip install btoon` | Native extension over btoon-core; wheels for Linux, macOS and Windows |
+| Go | [btoon-go](https://github.com/BTOON-project/btoon-go) | `go get github.com/BTOON-project/btoon-go` | Pure Go, no cgo |
+| PHP | [btoon-php](https://github.com/BTOON-project/btoon-php) | `composer require btoon/btoon` | Pure PHP 8.2+ |
+| Node.js (native) | [btoon-nodejs](https://github.com/BTOON-project/btoon-nodejs) | `npm install btoon` | Node-API addon over btoon-core |
+| C++ | [btoon-core](https://github.com/BTOON-project/btoon-core) | [CLI downloads](https://github.com/BTOON-project/btoon-core/releases/latest), library via CMake | Reference implementation, the spec, the conformance vectors and the `btoon` CLI |
 | Website | [btoon-web](https://github.com/BTOON-project/btoon-web) | [btoon.net](https://btoon.net) | Docs, in-browser playground, benchmarks |
 
-Every library implements spec 0.1 at version 0.1.0. **0.1.0 isn't published to the
-package registries yet.** PyPI (`btoon` 0.0.1) and npm (`btoon` 0.0.7) still have the
-older 0.0.x releases, whose format is not compatible. Until the release, each README
-explains how to install from the repository.
+Every library is at version 0.1.0 and implements spec 0.1. The npm and PyPI releases are
+built and published by GitHub Actions with trusted publishing and provenance. Releases
+before 0.1 (`btoon` 0.0.x on npm and PyPI) used an older, incompatible format.
 
 ## Quick look
 
