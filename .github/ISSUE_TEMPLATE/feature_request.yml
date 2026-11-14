@@ -1,0 +1,23 @@
+name: Feature request
+description: Suggest an improvement to a library, its API or its docs.
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        For open-ended ideas, [Discussions](https://github.com/BTOON-project/btoon-core/discussions) is a good first stop. To change the format itself, use the "Spec change" template in btoon-core.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What are you trying to do?
+      description: The use case, and what gets in the way today.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What would help?
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives you've considered

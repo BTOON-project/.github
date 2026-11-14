@@ -1,0 +1,38 @@
+name: Spec change
+description: Propose a change to the BTOON format or its conformance rules (file it in btoon-core).
+labels: [spec-change]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Spec changes are discussed here first, then go into SPEC.md and the conformance vectors, then the reference implementation, then every library. SPEC.md §12 describes versioning.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What can't be expressed, is ambiguous, or makes implementations disagree?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed change
+      description: The rule or wording you'd add or change, with byte examples if the encoding changes.
+    validations:
+      required: true
+  - type: dropdown
+    id: compatibility
+    attributes:
+      label: Compatibility
+      options:
+        - No change to the bytes of any valid document
+        - Decoders would accept less (stricter rules or limits)
+        - Decoders would accept more (new types or forms)
+        - Existing documents would encode differently
+    validations:
+      required: true
+  - type: textarea
+    id: vectors
+    attributes:
+      label: Conformance vectors
+      description: Cases that should be added, as hex with the expected value or error.

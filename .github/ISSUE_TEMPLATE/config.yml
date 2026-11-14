@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Questions, ideas and use cases
+    url: https://github.com/BTOON-project/btoon-core/discussions
+    about: Ask a question, share how you use BTOON, or float an idea before it becomes a proposal.
+  - name: Security problem
+    url: https://github.com/BTOON-project/.github/blob/main/SECURITY.md
+    about: Please report vulnerabilities privately, not in a public issue.
