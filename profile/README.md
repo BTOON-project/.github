@@ -20,7 +20,7 @@ between programs.
   MessagePack decoder can still read a document. BTOON decoders read MessagePack whose
   map keys are strings.
 - **Canonical.** A value has exactly one encoding. Every library writes the same bytes,
-  checked against 260 shared conformance vectors.
+  checked against 311 shared conformance vectors.
 - **Extension types:** timestamps with nanoseconds and a UTC offset, dates,
   arbitrary-precision integers, and float32/float64 vectors for embeddings.
 - **Optional envelopes:** compression (zlib in every library, plus LZ4, Zstandard, Brotli
@@ -40,7 +40,7 @@ between programs.
 | C++ | [btoon-core](https://github.com/BTOON-project/btoon-core) | [CLI downloads](https://github.com/BTOON-project/btoon-core/releases/latest), library via CMake | Reference implementation, the spec, the conformance vectors and the `btoon` CLI |
 | Website | [btoon-web](https://github.com/BTOON-project/btoon-web) | [btoon.net](https://btoon.net) | Docs, in-browser playground, benchmarks |
 
-Every library implements spec 0.1 (versions 0.1.x). Pushing a version tag releases it.
+Every library implements spec 0.3 (versions 0.3.x). Pushing a version tag releases it.
 GitHub Actions publishes to PyPI and npm and attaches the CLI to the core release.
 Packagist and the Go module proxy pick up new tags automatically.
 Releases before 0.1 (`btoon` 0.0.x on npm and PyPI) used an older, incompatible format.
@@ -57,7 +57,16 @@ assert btoon.decode(data) == rows
 
 The same bytes decode identically in C++, Node.js, the browser, Go and PHP.
 
-## Contributing
+## Feedback and contributing
+
+BTOON grows from what its users need, so tell us how you use it.
+- **Questions, ideas and use cases:** [Discussions](https://github.com/BTOON-project/btoon-core/discussions).
+- **Bugs:** an issue in the library's repository.
+- **Format changes:** the [spec change](https://github.com/BTOON-project/btoon-core/issues/new/choose) form.
+- **Security problems:** report them privately, as [SECURITY.md](https://github.com/BTOON-project/.github/blob/main/SECURITY.md) describes.
+
+[SPEC.md §12](https://github.com/BTOON-project/btoon-core/blob/main/docs/SPEC.md#12-versioning-and-feedback)
+explains how versions relate and what stays stable.
 
 Issues and pull requests are welcome in every repository. Format changes start in
 btoon-core: first [the spec](https://github.com/BTOON-project/btoon-core/blob/main/docs/SPEC.md),
